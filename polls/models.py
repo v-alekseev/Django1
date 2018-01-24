@@ -2,6 +2,10 @@ from django.db import models
 
 # Create your models here.
 
+from django.conf import settings
+
+print(settings.BASE_DIR)
+
 
 class Poll(models.Model):
     question = models.CharField(max_length=200)

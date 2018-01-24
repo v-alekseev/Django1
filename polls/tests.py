@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.test import TestCase
 from django.utils import timezone
 from .models import Poll
+
 def create_question(question_text, days):
    time = timezone.now() + datetime.timedelta(days=days)
    return Poll.objects.create(question_text=question_text, pub_date=time)

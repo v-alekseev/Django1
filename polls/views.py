@@ -13,21 +13,40 @@ class IndexView(generic.ListView):
    context_object_name = "latest_question_list"
 
    def get_queryset(self):
-       return Poll.objects.filter(
-           pub_date__lte=timezone.now()
-           ).order_by('-pub_date')[:5]
+        # latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
+        # context = {'latest_poll_list': latest_poll_list}
+        # return render(self.request, 'polls/index.html', context)
+        return Poll.objects.order_by('-pub_date')[:5]
 
-# class DetailView(generic.DetailView):
-#    model = Question
-#    template_name = "polls/detail.html"
-#
-#    def get_queryset(self):
-#        """
-#        Excludes any questions that aren't published yet.
-#        """
-#        return Question.objects.filter(pub_date__lte=timezone.now())
-#
-#
+       # latest_poll_list = Poll.objects.order_by('-pub_date')[:5]
+       # output = ', '.join([p.question for p in latest_poll_list])
+       # return HttpResponse(output)
+       #
+       # return Poll.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+
+   def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['now11'] = timezone.now()
+        context['polls_c'] = "foo"
+        return context
+
+
+class DetailView(generic.DetailView):
+   model = Poll
+   template_name = "polls/detail.html"
+
+
+   # def get_queryset(self):
+   #      return Poll.objects.all()
+
+   def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['id'] = self.object.id
+        context['polls_c'] = "foo"
+
+
+        return context
+
 # class ResultsView(generic.DetailView):
 #    model = Question
 #    template_name = "polls/results.html"
@@ -47,5 +66,5 @@ class IndexView(generic.ListView):
 #                return HttpResponseRedirect(reverse('polls:results', args=(p.id,)))
 
 
-def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+# def detail(request, question_id):
+#     return HttpResponse("You're looking at question %s." % question_id)
